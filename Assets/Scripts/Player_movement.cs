@@ -82,6 +82,16 @@ public class Player_movement : MonoBehaviour
             }
         }
 
+        if (collision.CompareTag("Ledge"))
+        {
+            Ledge_script ledgeScript = collision.gameObject.GetComponent<Ledge_script>();
+            pos = ledgeScript.destination.transform.position;
+            if (Input.GetKeyDown(doorInterract))
+            {
+                player.transform.position = new Vector3(pos.x, pos.y, 0);
+            }
+        }
+
         if (collision.CompareTag("Ladder"))
         {
             usingLadder = true;
@@ -99,6 +109,11 @@ public class Player_movement : MonoBehaviour
         {
             doorScript = null;
             atDoor = false;
+        }
+
+        if (collision.CompareTag("Ledge"))
+        {
+            
         }
 
         if (collision.CompareTag("Ladder"))
