@@ -12,6 +12,7 @@ public class Player_movement : MonoBehaviour
     public bool walking;
     public bool running;
     public bool atDoor = false;
+    public bool atLedge = false;
     public bool usingLadder = false;
 
     [Header("Keybinds")]
@@ -49,11 +50,14 @@ public class Player_movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         grounded = false;
-    }
+        atDoor = false;
+        atLedge = false;
+}
 
     // Update is called once per frame
     void Update()
     {
+        Interaction();
         StateHandler();
         Movement();
     }
@@ -75,21 +79,14 @@ public class Player_movement : MonoBehaviour
             atDoor = true;
             doorScript = collision.gameObject.GetComponent<Door_script>();
             pos = doorScript.exit.transform.position;
-
-            if (Input.GetKeyDown(doorInterract))
-            {
-                player.transform.position = new Vector3(pos.x, pos.y, 0);
-            }
         }
 
         if (collision.CompareTag("Ledge"))
         {
+            atLedge = true;
             Ledge_script ledgeScript = collision.gameObject.GetComponent<Ledge_script>();
             pos = ledgeScript.destination.transform.position;
-            if (Input.GetKeyDown(doorInterract))
-            {
-                player.transform.position = new Vector3(pos.x, pos.y, 0);
-            }
+            
         }
 
         if (collision.CompareTag("Ladder"))
@@ -127,7 +124,7 @@ public class Player_movement : MonoBehaviour
         // Mode - Running
         if(grounded && Input.GetKey(runKey))
         {
-            Debug.Log("Running");
+            //Debug.Log("Running");
             state = MovementState.running;
             moveSpeed = runSpeed;
             running = true;
@@ -135,7 +132,7 @@ public class Player_movement : MonoBehaviour
         }
         else if (grounded)
         {
-            Debug.Log("Walking");
+            //Debug.Log("Walking");
             state = MovementState.walking;
             moveSpeed = walkSpeed;
             running = false;
@@ -241,6 +238,21 @@ public class Player_movement : MonoBehaviour
         }
 
             transform.position += moveVelocity * moveSpeed * Time.deltaTime;
+    }
+
+    void Interaction()
+    {
+        if (Input.GetKeyDown(doorInterract) && atDoor)
+        {
+            Debug.Log("using door");
+            player.transform.position = new Vector3(pos.x, pos.y, 0);
+        }
+
+        if (Input.GetKeyDown(doorInterract) && atLedge)
+        {
+            Debug.Log("Using Ledge");
+            player.transform.position = new Vector3(pos.x, pos.y, 0);
+        }
     }
 
    
