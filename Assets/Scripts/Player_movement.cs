@@ -30,6 +30,15 @@ public class Player_movement : MonoBehaviour
     public Rigidbody2D rb;
     public GameObject player;
 
+    [Header("Raycast")]
+    public LayerMask terrainLayer;
+    public float sideLenght;
+    public float downLength;
+    public bool leftHit;
+    public bool rightHit;
+    public bool leftDownHit;
+    public bool rightDownHit;
+
     private Animator anim;
 
     public Door_script doorScript;
@@ -52,6 +61,10 @@ public class Player_movement : MonoBehaviour
         grounded = false;
         atDoor = false;
         atLedge = false;
+        leftHit = false;
+        leftDownHit = false;
+        rightHit = false;
+        rightDownHit = false;
 }
 
     // Update is called once per frame
@@ -64,7 +77,45 @@ public class Player_movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        RaycastHit2D hit;
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.right) * sideLenght, Color.yellow);
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.left) * sideLenght, Color.yellow);
+        Debug.DrawRay(transform.position + transform.right * 0.5f, transform.TransformDirection(Vector2.down) * sideLenght, Color.yellow);
+        Debug.DrawRay(transform.position + -transform.right * 0.5f, transform.TransformDirection(Vector2.down) * sideLenght, Color.yellow);
 
+        if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.right), sideLenght, terrainLayer))
+        {
+            rightHit = true;
+        }
+
+        else
+        {
+             rightHit= false;
+        }
+
+        if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.left), sideLenght, terrainLayer))
+        {
+            leftHit = true;
+        }
+
+        else
+        {
+            leftHit= false;
+        }
+
+        if (Physics2D.Raycast(transform.position + transform.right * 0.5f, transform.TransformDirection(Vector2.down), downLength, terrainLayer))
+        {
+            rightDownHit = true;
+        }
+
+        else { rightDownHit= false; }
+
+        if (Physics2D.Raycast(transform.position + -transform.right * 0.5f, transform.TransformDirection(Vector2.down), downLength, terrainLayer))
+        {
+            leftDownHit = true;
+        }
+
+        else {  leftDownHit= false; }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -110,7 +161,8 @@ public class Player_movement : MonoBehaviour
 
         if (collision.CompareTag("Ledge"))
         {
-            
+
+            atLedge= false;
         }
 
         if (collision.CompareTag("Ladder"))
@@ -146,7 +198,7 @@ public class Player_movement : MonoBehaviour
         anim.SetBool("isRun", false);
         anim.SetBool("isKickBoard", false);
 
-        if (Input.GetAxisRaw("Horizontal") < 0)
+        if (Input.GetAxisRaw("Horizontal") < 0 && !leftHit && leftDownHit)
         {
             direction = -1;
             moveVelocity = Vector3.left;
@@ -168,7 +220,7 @@ public class Player_movement : MonoBehaviour
                 
 
         }
-        if (Input.GetAxisRaw("Horizontal") > 0)
+        if (Input.GetAxisRaw("Horizontal") > 0 && !rightHit && rightDownHit)
         {
             direction = 1;
             moveVelocity = Vector3.right;

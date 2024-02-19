@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 103253498}
   - component: {fileID: 103253497}
   - component: {fileID: 103253496}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground (2)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 322574138}
   - component: {fileID: 322574137}
   - component: {fileID: 322574140}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -1437,7 +1437,7 @@ GameObject:
   - component: {fileID: 715616097}
   - component: {fileID: 715616096}
   - component: {fileID: 715616098}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1772,6 +1772,15 @@ MonoBehaviour:
   grounded: 0
   rb: {fileID: 751590382}
   player: {fileID: 751590379}
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  sideLenght: 0.6
+  downLength: 1
+  leftHit: 0
+  rightHit: 0
+  leftDownHit: 0
+  rightDownHit: 0
   doorScript: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
   state: 0
@@ -1833,7 +1842,7 @@ GameObject:
   - component: {fileID: 762725562}
   - component: {fileID: 762725561}
   - component: {fileID: 762725564}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (3)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -3509,7 +3518,7 @@ GameObject:
   - component: {fileID: 1451563417}
   - component: {fileID: 1451563416}
   - component: {fileID: 1451563415}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground (1)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -3642,7 +3651,7 @@ GameObject:
   - component: {fileID: 1495942692}
   - component: {fileID: 1495942691}
   - component: {fileID: 1495942693}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3876,7 +3885,7 @@ GameObject:
   - component: {fileID: 1621250324}
   - component: {fileID: 1621250323}
   - component: {fileID: 1621250325}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4658,7 +4667,7 @@ PrefabInstance:
     - target: {fileID: 2053518115102101881, guid: 521aebf732701414da1c25c63cb8390b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -94.97
+      value: 79.4
       objectReference: {fileID: 0}
     - target: {fileID: 2053518115102101881, guid: 521aebf732701414da1c25c63cb8390b,
         type: 3}
