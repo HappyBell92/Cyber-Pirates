@@ -8,6 +8,7 @@ TagManager:
   - Door
   - Ladder
   - Ledge
+  - DialogueChoice
   layers:
   - Default
   - TransparentFX
