@@ -14,12 +14,14 @@ public class Player_movement : MonoBehaviour
     public bool atDoor = false;
     public bool atLedge = false;
     public bool usingLadder = false;
+    public bool atTalkable = false;
 
     [Header("Keybinds")]
     public KeyCode runKey = KeyCode.LeftShift;
     public KeyCode leftMove = KeyCode.A;
     public KeyCode rightMove = KeyCode.D;
     public KeyCode doorInterract = KeyCode.E;
+    public KeyCode talk = KeyCode.E;
     public KeyCode ladderUp = KeyCode.W;
     public KeyCode ladderDown = KeyCode.S;
 
@@ -61,6 +63,7 @@ public class Player_movement : MonoBehaviour
         grounded = false;
         atDoor = false;
         atLedge = false;
+        atTalkable = false;
         leftHit = false;
         leftDownHit = false;
         rightHit = false;
@@ -132,6 +135,17 @@ public class Player_movement : MonoBehaviour
             pos = doorScript.exit.transform.position;
         }
 
+        if (collision.CompareTag("Talkable"))
+        {
+            atTalkable = true;
+            //talkScript = collision.gameObject.GetComponent<TalkTrigger>();
+
+            //if (Input.GetKeyDown(talk) && atTalkable)
+            //{
+            //    talkScript.StartDialogue();
+            //}
+        }
+
         if (collision.CompareTag("Ledge"))
         {
             atLedge = true;
@@ -157,6 +171,12 @@ public class Player_movement : MonoBehaviour
         {
             doorScript = null;
             atDoor = false;
+        }
+
+        if (collision.CompareTag("Talkable"))
+        {
+            //talkScript = null;
+            atTalkable = false;
         }
 
         if (collision.CompareTag("Ledge"))
@@ -296,13 +316,13 @@ public class Player_movement : MonoBehaviour
     {
         if (Input.GetKeyDown(doorInterract) && atDoor)
         {
-            Debug.Log("using door");
+            //Debug.Log("using door");
             player.transform.position = new Vector3(pos.x, pos.y, 0);
         }
 
         if (Input.GetKeyDown(doorInterract) && atLedge)
         {
-            Debug.Log("Using Ledge");
+            //Debug.Log("Using Ledge");
             player.transform.position = new Vector3(pos.x, pos.y, 0);
         }
     }
