@@ -1,0 +1,15 @@
+﻿title: Start
+tags:
+colorID: 0
+position: 0.0
+---
+<<PlayAudio spaceship_music_yms 0.3 loop>>
+<<Act Twink twivnk_sketch_portrait_1.2 1.25 center blue>>
+<<Move Twink right center 0.5>>
+
+Twink: Hello this is a test!
+Twink: I hope this works!
+Twink: Well it seems to be working fine
+Twink: Bye!
+<<Hide Twink>>
+===

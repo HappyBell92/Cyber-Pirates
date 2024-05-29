@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
 
-public class YarninterractableTest : MonoBehaviour
+public class Yarninterractable : MonoBehaviour
 {
     // this file is attached to every character in the scene and so will affect only
     // the targeted character object when functions are called
