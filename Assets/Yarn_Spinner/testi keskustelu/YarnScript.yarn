@@ -23,7 +23,7 @@ You can also write 'commands', which represent things that happen in the game!
 
 In this editor, they'll appear as text:
 
-<<fade_up 1.0>>
+//<<fade_up 1.0>>
 
 -> Nice!
     Right??

@@ -44,6 +44,7 @@ public class Player_movement : MonoBehaviour
     private Animator anim;
 
     public Door_script doorScript;
+    public Yarninterractable talkScript;
 
     public Vector3 pos;
     
@@ -137,7 +138,13 @@ public class Player_movement : MonoBehaviour
 
         if (collision.CompareTag("Talkable"))
         {
+            talkScript = collision.gameObject.GetComponent<Yarninterractable>();
             atTalkable = true;
+
+            if (Input.GetKeyDown(talk) && atTalkable && talkScript.interactable)
+            {
+                talkScript.StartConversation();
+            }
             //talkScript = collision.gameObject.GetComponent<TalkTrigger>();
 
             //if (Input.GetKeyDown(talk) && atTalkable)
@@ -175,7 +182,7 @@ public class Player_movement : MonoBehaviour
 
         if (collision.CompareTag("Talkable"))
         {
-            //talkScript = null;
+            talkScript = null;
             atTalkable = false;
         }
 
@@ -325,6 +332,11 @@ public class Player_movement : MonoBehaviour
             //Debug.Log("Using Ledge");
             player.transform.position = new Vector3(pos.x, pos.y, 0);
         }
+
+        //if (Input.GetKeyDown(talk) && atTalkable)
+        //{
+        //    talkScript.StartConversation();
+        //}
     }
 
    

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 using Yarn.Unity;
 
 public class Yarninterractable : MonoBehaviour
@@ -9,27 +11,65 @@ public class Yarninterractable : MonoBehaviour
     // the targeted character object when functions are called
     [SerializeField] private string conversationStartNode;
 
+    //public Rigidbody rb;
     private DialogueRunner dialogueRunner;
-    private bool interactable = true;
+    public bool interactable = true;
     private bool isCurrentConversation = false;
+
+    public Transform exit;
+    public TextMeshProUGUI text;
+
+    public float alpha = 0f;
+    public float fadeSpeed = 0.5f;
+    public bool fading;
+
+    public KeyCode talk = KeyCode.E;
 
     public void Start()
     {
+        fading = true;
         dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
         dialogueRunner.onDialogueComplete.AddListener(EndConversation);
     }
 
-    public void OnMouseDown()
+    //public void OnMouseDown()
+    //{
+    //    if (interactable && !dialogueRunner.IsDialogueRunning)
+    //    {
+    //        StartConversation();
+    //    }
+    //}
+
+    public void Update()
     {
-        if (interactable && !dialogueRunner.IsDialogueRunning)
+        if (!fading)
         {
-            StartConversation();
+            alpha = 1f;
+            text.color = new Color(1f, 1f, 1f, alpha);
+        }
+
+        if (fading)
+        {
+            alpha = 0f;
+            text.color = new Color(1f, 1f, 1f, alpha);
         }
     }
 
+    //public void OnTriggerStay(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Player"))
+    //    {
+    //        if (interactable && !dialogueRunner.IsDialogueRunning && Input.GetKey(talk))
+    //        {
+    //            StartConversation();
+    //        }
+    //    }
+        
+    //}
+
     // disable scene interaction, activate speaker indicator, and
     // run dialogue from {conversationStartNode}
-    private void StartConversation()
+    public void StartConversation()
     {
         Debug.Log($"Started conversation with {name}.");
         isCurrentConversation = true;
@@ -54,6 +94,22 @@ public class Yarninterractable : MonoBehaviour
     public void DisableConversation()
     {
         interactable = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            fading = false;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            fading = true;
+        }
     }
 
 }
