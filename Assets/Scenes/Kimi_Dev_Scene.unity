@@ -1578,7 +1578,8 @@ MonoBehaviour:
   conversationStartNode: Start
   interactable: 1
   exit: {fileID: 0}
-  text: {fileID: 0}
+  text: {fileID: 1573646485}
+  playerScript: {fileID: 0}
   alpha: 0
   fadeSpeed: 0.5
   fading: 0

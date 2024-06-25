@@ -40,6 +40,7 @@ public class Player_movement : MonoBehaviour
     public bool rightHit;
     public bool leftDownHit;
     public bool rightDownHit;
+    public bool talking;
 
     private Animator anim;
 
@@ -69,6 +70,7 @@ public class Player_movement : MonoBehaviour
         leftDownHit = false;
         rightHit = false;
         rightDownHit = false;
+        talking = false;
 }
 
     // Update is called once per frame
@@ -81,7 +83,7 @@ public class Player_movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        RaycastHit2D hit;
+        //RaycastHit2D hit;
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.right) * sideLenght, Color.yellow);
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.left) * sideLenght, Color.yellow);
         Debug.DrawRay(transform.position + transform.right * 0.5f, transform.TransformDirection(Vector2.down) * sideLenght, Color.yellow);
@@ -141,10 +143,11 @@ public class Player_movement : MonoBehaviour
             talkScript = collision.gameObject.GetComponent<Yarninterractable>();
             atTalkable = true;
 
-            if (Input.GetKeyDown(talk) && atTalkable && talkScript.interactable)
-            {
-                talkScript.StartConversation();
-            }
+            //if (Input.GetKeyDown(talk) && atTalkable && talkScript.interactable && !talking)
+            //{
+            //    talking = true;
+            //    talkScript.StartConversation();
+            //}
             //talkScript = collision.gameObject.GetComponent<TalkTrigger>();
 
             //if (Input.GetKeyDown(talk) && atTalkable)
@@ -221,61 +224,40 @@ public class Player_movement : MonoBehaviour
 
     private void Movement()
     {
-        Vector3 moveVelocity = Vector3.zero;
-        anim.SetBool("isRun", false);
-        anim.SetBool("isKickBoard", false);
-
-        if (Input.GetAxisRaw("Horizontal") < 0 && !leftHit && leftDownHit)
+        if (!talking)
         {
-            direction = -1;
-            moveVelocity = Vector3.left;
+            Vector3 moveVelocity = Vector3.zero;
+            anim.SetBool("isRun", false);
+            anim.SetBool("isKickBoard", false);
 
-            transform.localScale = new Vector3(direction, 1, 1);
-            if (!anim.GetBool("isJump"))
+            if (Input.GetAxisRaw("Horizontal") < 0 && !leftHit && leftDownHit)
             {
-                if (running)
+                direction = -1;
+                moveVelocity = Vector3.left;
+
+                transform.localScale = new Vector3(direction, 1, 1);
+                if (!anim.GetBool("isJump"))
                 {
-                    anim.SetBool("isRun", false);
-                    anim.SetBool("isKickBoard", true);
+                    if (running)
+                    {
+                        anim.SetBool("isRun", false);
+                        anim.SetBool("isKickBoard", true);
+                    }
+                    else if (walking)
+                    {
+                        anim.SetBool("isRun", true);
+                        anim.SetBool("isKickBoard", false);
+                    }
                 }
-                else if (walking)
-                {
-                    anim.SetBool("isRun", true);
-                    anim.SetBool("isKickBoard", false);
-                }
+
+
             }
-                
-
-        }
-        if (Input.GetAxisRaw("Horizontal") > 0 && !rightHit && rightDownHit)
-        {
-            direction = 1;
-            moveVelocity = Vector3.right;
-
-            transform.localScale = new Vector3(direction, 1, 1);
-            if (!anim.GetBool("isJump"))
+            if (Input.GetAxisRaw("Horizontal") > 0 && !rightHit && rightDownHit)
             {
-                if (running)
-                {
-                    anim.SetBool("isRun", false);
-                    anim.SetBool("isKickBoard", true);
-                }
-                else if (walking)
-                {
-                    anim.SetBool("isRun", true);
-                    anim.SetBool("isKickBoard", false);
-                }
-            }
-        }
-        if (usingLadder)
-        {
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                direction = 1;
+                moveVelocity = Vector3.right;
 
-            if (Input.GetAxisRaw("Vertical") > 0)
-            {
-                moveVelocity = Vector3.up;
-
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = new Vector3(direction, 1, 1);
                 if (!anim.GetBool("isJump"))
                 {
                     if (running)
@@ -290,33 +272,57 @@ public class Player_movement : MonoBehaviour
                     }
                 }
             }
-
-            if (Input.GetAxisRaw("Vertical") < 0)
+            if (usingLadder)
             {
-                moveVelocity = Vector3.down;
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-                transform.localScale = new Vector3(1, 1, 1);
-                if (!anim.GetBool("isJump"))
+                if (Input.GetAxisRaw("Vertical") > 0)
                 {
-                    if (running)
+                    moveVelocity = Vector3.up;
+
+                    transform.localScale = new Vector3(1, 1, 1);
+                    if (!anim.GetBool("isJump"))
                     {
-                        anim.SetBool("isRun", false);
-                        anim.SetBool("isKickBoard", true);
+                        if (running)
+                        {
+                            anim.SetBool("isRun", false);
+                            anim.SetBool("isKickBoard", true);
+                        }
+                        else if (walking)
+                        {
+                            anim.SetBool("isRun", true);
+                            anim.SetBool("isKickBoard", false);
+                        }
                     }
-                    else if (walking)
+                }
+
+                if (Input.GetAxisRaw("Vertical") < 0)
+                {
+                    moveVelocity = Vector3.down;
+
+                    transform.localScale = new Vector3(1, 1, 1);
+                    if (!anim.GetBool("isJump"))
                     {
-                        anim.SetBool("isRun", true);
-                        anim.SetBool("isKickBoard", false);
+                        if (running)
+                        {
+                            anim.SetBool("isRun", false);
+                            anim.SetBool("isKickBoard", true);
+                        }
+                        else if (walking)
+                        {
+                            anim.SetBool("isRun", true);
+                            anim.SetBool("isKickBoard", false);
+                        }
                     }
                 }
             }
-        }
-        if (!usingLadder)
-        {
-            rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-        }
+            if (!usingLadder)
+            {
+                rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+            }
 
             transform.position += moveVelocity * moveSpeed * Time.deltaTime;
+        }
     }
 
     void Interaction()
@@ -333,6 +339,11 @@ public class Player_movement : MonoBehaviour
             player.transform.position = new Vector3(pos.x, pos.y, 0);
         }
 
+        if (Input.GetKeyDown(talk) && atTalkable && talkScript.interactable && !talking)
+        {
+            talking = true;
+            talkScript.StartConversation();
+        }
         //if (Input.GetKeyDown(talk) && atTalkable)
         //{
         //    talkScript.StartConversation();

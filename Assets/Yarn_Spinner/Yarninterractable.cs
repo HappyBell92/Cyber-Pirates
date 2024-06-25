@@ -18,6 +18,7 @@ public class Yarninterractable : MonoBehaviour
 
     public Transform exit;
     public TextMeshProUGUI text;
+    public Player_movement playerScript;
 
     public float alpha = 0f;
     public float fadeSpeed = 0.5f;
@@ -86,6 +87,7 @@ public class Yarninterractable : MonoBehaviour
             Debug.Log($"Ending Conversation with {name}.");
             // TODO *stop animation or turn off indicator or whatever* HERE
             isCurrentConversation = false;
+            playerScript.talking = false;
         }
     }
 
@@ -100,6 +102,7 @@ public class Yarninterractable : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            playerScript = collision.gameObject.GetComponent<Player_movement>();
             fading = false;
         }
     }
@@ -108,6 +111,7 @@ public class Yarninterractable : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            playerScript = null;
             fading = true;
         }
     }
